@@ -30,7 +30,8 @@ aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
 INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count 1 --instance-type t2.micro --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --user-data "#!/bin/bash
 sudo yum update -y
-sudo yum install -y java-1.8.0-openjdk
+sudo amazon-linux-extras install java-openjdk11 -y
+source ~/.bash_profile
 sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
 sudo yum install -y jenkins
@@ -41,3 +42,13 @@ aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
 # Get the public IP address of the instance
 PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress'
+
+# May be for jenkins need to install jdk11
+# sudo yum update -y
+
+# # Install JDK 11
+# sudo amazon-linux-extras install java-openjdk11 -y
+# may be we can remove sudo yum remove java-1.7.0-openjdk
+# then must update the environment
+# echo $"export PATH=$PATH:/usr/lib/jvm/java-11-openjdk-11.0.16.0.8-1.amzn2.0.1.x86_64/bin/" >> ~/.bash_profile
+# source ~/.bash_profile
