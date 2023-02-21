@@ -1,4 +1,5 @@
 #!/bin/bash
+# ubuntu
 
 # Set the VPC and subnet CIDR blocks
 VPC_CIDR_BLOCK="10.0.0.0/16"
@@ -28,7 +29,7 @@ aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8080 --cidr 0.0.0.0/0
 
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
-INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0c94855ba95c71c99 --count 1 --instance-type t2.micro --key-name my-key-pair --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --user-data "#!/bin/bash
+INSTANCE_ID=$(aws ec2 run-instances --image-id ami-00eeedc4036573771 --count 1 --instance-type t2.micro --key-name my-key-pair --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --user-data "#!/bin/bash
 sudo apt-get update
 sudo apt-get install -y openjdk-8-jdk
 wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
