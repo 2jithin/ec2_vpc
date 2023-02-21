@@ -1,5 +1,5 @@
 #!/bin/bash
-# ubuntu
+# ubuntu Incompleted script!!!
 
 # Set the VPC and subnet CIDR blocks
 VPC_CIDR_BLOCK="10.0.0.0/16"
@@ -41,4 +41,4 @@ sudo apt-get install -y jenkins") #--query 'Instances[0].InstanceId' --output te
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
 # Get the public IP address of the instance
-PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress'
+PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress')

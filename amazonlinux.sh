@@ -41,7 +41,7 @@ sudo service jenkins start") # --query 'Instances[0].InstanceId' --output text
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
 # Get the public IP address of the instance
-PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress'
+PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress')
 
 # May be for jenkins need to install jdk11
 # sudo yum update -y
