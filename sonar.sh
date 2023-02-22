@@ -1,14 +1,16 @@
 #!/bin/bash
 
 # Update the system
-sudo apt update
+#sudo apt update
+sudo yum update -y
 
 # Install Java
-sudo apt install default-jdk -y
+#sudo apt install default-jdk -y
 
 # Download and extract SonarQube
 wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.2.46101.zip
 unzip sonarqube-8.9.2.46101.zip
+sleep 5
 
 # Move SonarQube directory to /opt
 sudo mv sonarqube-8.9.2.46101 /opt/sonarqube
@@ -38,8 +40,14 @@ EOF
 
 # Reload Systemd and start SonarQube
 sudo systemctl daemon-reload
-sudo systemctl start sonarqube
+sleep 5
 sudo systemctl enable sonarqube
+sleep 1c
+sudo systemctl start sonarqube
+sudo systemctl status sonarqube
+
+
+
 
 # Save and give executable access
 #chmod +x install_sonarqube.sh
