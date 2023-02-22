@@ -44,3 +44,4 @@ sudo systemctl enable sonarqube
 # Save and give executable access
 #chmod +x install_sonarqube.sh
 #./install_sonarqube.sh
+# Accessible port 9000
