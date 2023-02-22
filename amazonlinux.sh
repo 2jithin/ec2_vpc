@@ -35,7 +35,10 @@ source ~/.bash_profile
 sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
 sudo yum install -y jenkins
-sudo service jenkins start") # --query 'Instances[0].InstanceId' --output text
+sudo service jenkins start
+sleep 10") # --query 'Instances[0].InstanceId' --output text
+
+sleep 10
 
 # Wait for the instance to be in a running state
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
