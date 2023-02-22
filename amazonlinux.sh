@@ -38,7 +38,7 @@ sudo yum install -y jenkins
 sudo service jenkins start
 sleep 10") # --query 'Instances[0].InstanceId' --output text
 
-sleep 10
+sleep 25
 
 # Wait for the instance to be in a running state
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
