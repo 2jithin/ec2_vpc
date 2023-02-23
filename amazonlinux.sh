@@ -33,7 +33,10 @@ INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count 1 -
 sudo yum update -y
 sudo amazon-linux-extras install java-openjdk11 -y
 sleep 10
+sudo useradd -r -s /bin/false sonar -g sonar
 source ~/.bash_profile") # --query 'Instances[0].InstanceId' --output text
+
+# added sonar group without user access bin/false
 
 sleep 35
 echo "========== Instance ID : =="$INSTANCE_ID
