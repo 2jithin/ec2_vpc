@@ -1,0 +1,37 @@
+sudo yum update -yum
+sudo yum install java-11-openjdk-devel -y
+sudo yum install postgresql-server postgresql-contrib -y
+sudo postgresql-setup initdb
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+
+
+
+sudo su - postgres
+psql
+CREATE DATABASE sonarqube;
+CREATE USER sonarqube WITH ENCRYPTED PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE sonarqube TO sonarqube;
+\q
+exit
+
+// Sonar Installation
+
+cd ~
+curl -L https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.3.0.51899.zip -o sonarqube.zip
+unzip sonarqube.zip
+sudo mv sonarqube-9.3.0.51899 /opt/sonarqube
+
+sudo vi /opt/sonarqube/conf/sonar.properties
+sudo useradd -r sonarqube
+sudo chown -R sonarqube:sonarqube /opt/sonarqube
+
+# Replace the exisiting and replace with following line
+
+sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube
+sonar.jdbc.username=sonarqube
+sonar.jdbc.password=password
+
+sudo /opt/sonarqube/bin/linux-x86-64
+
+

@@ -41,9 +41,11 @@ EOF
 # Reload Systemd and start SonarQube
 sudo systemctl daemon-reload
 sleep 5
-sudo systemctl enable sonarqube
-sleep 1c
+
 sudo systemctl start sonarqube
+sleep 1
+sudo systemctl enable sonarqube
+
 sudo systemctl status sonarqube
 
 
