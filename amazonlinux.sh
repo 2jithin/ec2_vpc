@@ -38,8 +38,13 @@ source ~/.bash_profile") # --query 'Instances[0].InstanceId' --output text
 # added sonar group without user access bin/false
 
 sleep 10
-echo "========== Instance ID : =="$INSTANCE_ID
+echo "Instance ID --output: $INSTANCE_ID" > test.json
 # Wait for the instance to be in a running state
+
+result=$(jq '.Instances[].InstanceId' test.json)
+
+echo "Instance id is $result"
+
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
 # Get the public IP address of the instance
