@@ -32,6 +32,10 @@ Group=sonarqube
 WorkingDirectory=/opt/sonarqube
 ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
 ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+StandardOutput=syslog
+LimitNOFILE=65536
+LimitNPROC=4096
+TimeoutStartSec=5
 Restart=always
 
 [Install]
