@@ -27,7 +27,6 @@ SG_ID=$(aws ec2 create-security-group --group-name SSHAndJenkinsAccess --descrip
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 22 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8080 --cidr 0.0.0.0/0
 
-sleep 15
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
 INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count 1 --instance-type t2.micro --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --user-data "#!/bin/bash
 sudo yum update -y
@@ -38,7 +37,7 @@ source ~/.bash_profile") # --query 'Instances[0].InstanceId' --output text
 
 # added sonar group without user access bin/false
 
-sleep 35
+sleep 10
 echo "========== Instance ID : =="$INSTANCE_ID
 # Wait for the instance to be in a running state
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
