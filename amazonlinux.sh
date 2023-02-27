@@ -38,7 +38,7 @@ source ~/.bash_profile") # --query 'Instances[0].InstanceId' --output text
 
 # added sonar group without user access bin/false
 
-sleep 10
+sleep 5
 echo "Instance ID --output: $INSTANCE_ID" > test.json
 # Wait for the instance to be in a running state
 
