@@ -1,0 +1,100 @@
+# Postgresql + sonarqube installation in aws Ec2 linux:---------------------------------------------------------------
+# Prerequisites:Need an EC2 instance (min t2.medium)Install Java-11
+amazon-linux-extras install java-openjdk11 -y
+# Commands:
+
+Yum update -y
+
+yum install -y postgresql-server postgresql-devel
+sudo amazon-linux-extras install postgresql10 vim epel -y
+sudo yum install -y postgresql-server postgresql-devel
+
+#Setup PostgreSQL 10 Database For SonarQube:
+
+sudo /usr/bin/postgresql-setup --initdb
+
+sudo vi /var/lib/pgsql/data/pg_hba.conf
+
+# Replace Method name "peer" to "md5" Not secured --------------------------
+
+sudo systemctl enable postgresql
+sudo systemctl start postgresql
+sudo systemctl status postgresql
+
+sudo - postgres
+
+# You can get into Postgres console by typing the below command and Create a sonarqubedb database
+psql
+create database sonarqubedb;
+
+create user sonar with encrypted password 'sonar';
+
+grant all privileges on database sonarqubedb to sonar;
+
+\q 
+exit 
+
+systemctl restart postgresql 
+systemctl status postgresql
+
+# add /etc/sysctl.conf
+sudo vi /etc/sysctl.conf
+
+vm.max_map_count=524288
+fs.file-max=131072
+ulimit -n 131072
+ulimit -u 8192
+
+# Add below entries in /etc/security/limits.conf
+sonarqube   -   nofile   131072
+sonarqube   -   nproc    8192
+
+
+# Download soarnqube and extract it.
+
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.2.46101.zip
+unzip -q sonarqube-8.9.2.46101.zip
+mv sonarqube-8.9.2.46101 sonarqube
+sudo mv sonarqube /opt/
+
+# Open /opt/sonarqube/conf/sonar.properties file
+
+sudo vi /opt/sonarqube/conf/sonar.properties
+sonar.jdbc.username=sonar
+sonar.jdbc.password=sonar
+
+sonar.jdbc.url=jdbc:postgresql://localhost/sonarqubedb
+sonar.web.host=0.0.0.0
+sonar.web.port=9000
+sonar.search.javaOpts=-Xmx512m -Xms512m -XX:MaxDirectMemorySize=256m -XX:+HeapDumpOnOutOfMemoryError
+# Save it
+#
+# Create a service file for reboot startup in the root user access
+cat >>/etc/systemd/system/sonarqube.service <<EOF
+[Unit]
+Description=SonarQube service
+After=syslog.target network.target
+[Service]
+Type=forking
+User=sonar
+Group=sonar
+PermissionsStartOnly=true
+ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start 
+ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+StandardOutput=syslog
+LimitNOFILE=65536
+LimitNPROC=4096
+TimeoutStartSec=5
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Add sonar user and grant ownership to /opt/sonarqube directory
+sudo useradd -d /opt/sonarqube sonar
+sudo chown -R sonar:sonar /opt/sonarqube/
+
+# Reload the demon and start sonarqube service
+
+sudo systemctl daemon-reload 
+sudo systemctl start sonarqube.service

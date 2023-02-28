@@ -10,12 +10,12 @@ sudo systemctl enable postgresql
 sudo su - postgres
 psql
 CREATE DATABASE sonarqube;
-CREATE USER sonarqube WITH ENCRYPTED PASSWORD 'password';
+CREATE USER sonarqube WITH ENCRYPTED PASSWORD 'PASSWORD';
 GRANT ALL PRIVILEGES ON DATABASE sonarqube TO sonarqube;
 \q
 exit
 
-// Sonar Installation
+#// Sonar Installation
 
 cd ~
 curl -L https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.3.0.51899.zip -o sonarqube.zip
@@ -23,14 +23,20 @@ unzip sonarqube.zip
 sudo mv sonarqube-9.3.0.51899 /opt/sonarqube
 
 sudo vi /opt/sonarqube/conf/sonar.properties
-sudo useradd -r sonarqube
-sudo chown -R sonarqube:sonarqube /opt/sonarqube
 
 # Replace the exisiting and replace with following line
 
 sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube
 sonar.jdbc.username=sonarqube
 sonar.jdbc.password=password
+
+sudo useradd -r sonarqube
+sudo chown -R sonarqube:sonarqube /opt/sonarqube
+
+#You also need to set some environment variables for Java memory settings:
+
+export SONAR_SCANNER_OPTS="-Xmx512m"
+export SONAR_WEB_JAVAADDITIONALOPTS="-server"
 
 sudo /opt/sonarqube/bin/linux-x86-64
 
