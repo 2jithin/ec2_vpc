@@ -1,6 +1,6 @@
 # Postgresql + sonarqube installation in aws Ec2 linux:---------------------------------------------------------------
 # Prerequisites:Need an EC2 instance (min t2.medium)Install Java-11
-amazon-linux-extras install java-openjdk11 -y
+sudo amazon-linux-extras install java-openjdk11 -y
 # Commands:
 
 Yum update -y

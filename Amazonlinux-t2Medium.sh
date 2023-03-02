@@ -32,14 +32,12 @@ aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
 INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count 1 --instance-type t2.medium --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --user-data "#!/bin/bash
 sudo yum update -y
-sudo amazon-linux-extras install java-openjdk11 -y
-sleep 10
-sudo useradd -r -s /bin/false sonar -g sonar
+sudo yum install java-11-openjdk-devel -y
+#sudo useradd -r -s /bin/false sonar -g sonar
 source ~/.bash_profile") # --query 'Instances[0].InstanceId' --output text
 
 # added sonar group without user access bin/false
 
-sleep 5
 echo "Instance ID --output: $INSTANCE_ID" > test.json
 # Wait for the instance to be in a running state
 
