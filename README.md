@@ -1,1 +1,1 @@
-curl -L https://raw.githubusercontent.com/2jithin/ec2_vpc/main/amazonlinux.sh -o ec2provision.sh ; sh ec2provision.sh
+curl -L https://raw.githubusercontent.com/2jithin/ec2_vpc/main/amazonlinux-t2Medium.sh -o ec2provision.sh ; sh ec2provision.sh
