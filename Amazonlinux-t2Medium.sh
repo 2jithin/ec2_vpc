@@ -30,7 +30,7 @@ aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 9000 --cidr 0.0.0.0/0
 
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
-INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count 1 --instance-type t2.medium --security-group-ids $SG_ID --subnet-id $SUBNET_ID —tag-specifications resourceType=Instance, Tags= [{Key=sonarqube, Value=Test}] resourceType=Volume, Tags= [{Key=sonarqube, Value=Test}] --associate-public-ip-address --user-data "#!/bin/bash
+INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count 1 --instance-type t2.medium --security-group-ids $SG_ID --subnet-id $SUBNET_ID —tag-specifications ResourceType=Instance, Tags= [{Key=sonarqube, Value=Test}] ResourceType=volume, Tags= [{Key=sonarqube, Value=Test}] --associate-public-ip-address --user-data "#!/bin/bash
 sudo yum update -y
 sudo yum install java-11-openjdk-devel -y
 #sudo useradd -r -s /bin/false sonar -g sonar
@@ -45,7 +45,7 @@ result=$(jq '.Instances[].InstanceId' test.json)
 
 echo "Instance id is $result"
 
-aws ec2 descripbe-instances —filters name=sonarqube, Values=Test
+# aws ec2 descripbe-instances —filters name=sonarqube, Values=Test
 
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
