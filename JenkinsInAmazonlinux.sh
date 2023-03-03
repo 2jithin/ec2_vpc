@@ -42,6 +42,19 @@ sudo yum install maven -y
 sudo yum install git -y
 sleep 10") # --query 'Instances[0].InstanceId' --output text
 
+# MAVEN 3.0.5 version
+
+# added sonar group without user access bin/false
+
+echo "Instance ID --output: $INSTANCE_ID" > test.json
+
+cat test.json
+# Wait for the instance to be in a running state
+
+result=$(jq '.Instances[].InstanceId' test.json)
+
+echo "Instance id is $result"
+
 # Wait for the instance to be in a running state
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
