@@ -45,7 +45,7 @@ result=$(jq '.Instances[].InstanceId' test.json)
 
 echo "Instance id is $result"
 
-# aws ec2 descripbe-instances —filters name=sonarqube, Values=Test
+aws ec2 describe-instances —filters name=sonarqube, Values=Test
 
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
