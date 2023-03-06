@@ -43,9 +43,9 @@ echo "Instance ID --output: $INSTANCE_ID" > test.json
 cat test.json
 # Wait for the instance to be in a running state
 
-result=$(jq '.Instances[].InstanceId' test.json)
+# result=$(jq '.Instances[].InstanceId' test.json)
 
-echo "Instance id is $result"
+# echo "Instance id is $result"
 
 aws ec2 describe-instances —filters name=sonarqube, Values=Test
 
