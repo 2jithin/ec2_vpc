@@ -35,6 +35,7 @@ aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port
 INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count 1 --instance-type t2.medium --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=docker,Value=Test}]' 'ResourceType=volume,Tags=[{Key=docker, Value=Test}]' --user-data "#!/bin/bash
 sudo yum update -y
 sudo yum install java-11-openjdk-devel -y
+sudo yum install git -y
 sudo yum install docker -y
 sudo sed -i '/^ExecStart=/c ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H fd:// --containerd=/run/containerd/containerd.sock $OPTIONS $DOCKER_STORAGE_OPTIONS $DOCKER_ADD_RUNTIMES'
 sudo usermod -aG docker $USER
