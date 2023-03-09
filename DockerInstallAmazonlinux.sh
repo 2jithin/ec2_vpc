@@ -55,7 +55,7 @@ cat test.json
 
 # echo "Instance id is $result"
 
-aws ec2 describe-instances —filters name=docker, Values=Test
+aws ec2 describe-instances --filters name=docker, Values=Test
 
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
