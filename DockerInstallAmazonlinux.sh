@@ -37,6 +37,7 @@ sudo yum install java-11-openjdk-devel -y
 sudo yum install docker -y
 sudo sed -i '/^ExecStart=/c ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H fd:// --containerd=/run/containerd/containerd.sock $OPTIONS $DOCKER_STORAGE_OPTIONS $DOCKER_ADD_RUNTIMES'
 sudo usermod -aG docker $USER
+sudo chmod 666 /var/run/docker.sock
 sudo service docker stop
 sudo chmod 666 /var/run/docker.sock
 sudo systemctl daemon-reload
