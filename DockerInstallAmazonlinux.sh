@@ -59,7 +59,9 @@ cat test.json
 
 # echo "Instance id is $result"
 
-aws ec2 describe-instances --filters name=docker, Values=Test
+aws ec2 describe-instances --filters Name=docker,Values=Test
+
+aws ec2 describe-instances --query 'Reservations[].Instances[].[InstanceId, Tags[?Key==`docker`], Tags[?Key==`docker`].Value[]]'
 
 aws ec2 wait instance-running --instance-ids $INSTANCE_ID
 
