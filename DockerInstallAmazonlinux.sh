@@ -59,16 +59,17 @@ cat test.json
 
 # echo "Instance id is $result"
 
-#aws ec2 describe-instances --filters Name=docker,Values=Test
-
 aws ec2 describe-instances --query 'Reservations[0].Instances[0].[InstanceId, Tags[?Key==`docker`].Value[]]'
 
-INSTANCEID=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].InstanceId" --output text)
+INSTANCEID=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query "Reservations[*].Instances[*].InstanceId" --output json)
 
+echo "========== WAIT for Instance ============="
+
+sleep 20
 aws ec2 wait instance-running --instance-ids $INSTANCEID
 
 # Get the public IP address of the instance
-PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCEID --query 'Reservations[0].Instances[0].PublicIpAddress')
+PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCEID --query 'Reservations[0].Instances[0].PublicIpAddress' --output json)
 
 # May be for jenkins need to install jdk11
 # sudo yum update -y
