@@ -68,6 +68,8 @@ echo "========== WAIT for Instance ============="
 sleep 20
 aws ec2 wait instance-running --instance-ids $INSTANCEID
 
+echo "========== Public IP for Instance ============="
+
 # Get the public IP address of the instance
 PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCEID --query 'Reservations[0].Instances[0].PublicIpAddress' --output json)
 
