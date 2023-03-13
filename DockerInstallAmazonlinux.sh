@@ -73,6 +73,8 @@ echo "========== Public IP for Instance ============="
 # Get the public IP address of the instance
 PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCEID --query 'Reservations[0].Instances[0].PublicIpAddress' --output json)
 
+echo "$PUBLIC_IP"
+
 # May be for jenkins need to install jdk11
 # sudo yum update -y
 
