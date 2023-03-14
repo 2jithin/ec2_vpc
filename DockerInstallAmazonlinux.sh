@@ -1,4 +1,43 @@
 #!/bin/bash
+ec2type=""
+read -p "Enter number of instance count you want eg; 1,2,3.. : " count
+
+echo "You are requested to provision :, $count , instance"
+
+echo "Please select Amazon linux instance (AMI) type (Enter Numerical value):"
+echo "1. t2.small"
+echo "2. t2.medium"
+echo "3. t2.large"
+echo "4. Quit"
+
+read -p "Enter your choice [1-4]: " choice
+
+case $choice in
+  1)
+    echo "You chose Option t2.small"
+    # Add code for Option One here
+    ec2type=t2.small
+    ;;
+  2)
+    echo "You chose Option t2.medium"
+    # Add code for Option Two here
+    ec2type=t2.medium
+    ;;
+  3)
+    echo "You chose Option t2.large"
+    # Add code for Option Three here
+    ec2type=t2.large
+    ;;
+  4)
+    echo "Goodbye!"
+    exit 0
+    ;;
+  *)
+    echo "Invalid choice, please try again."
+    ;;
+esac
+
+echo "provisioning $count of Amazon linux Instance as $ec2type along with VPC,Subnet,SG,IGateway,RouteTable also will be installed \n 1.java-11 \n2.git]\n 3.Docker \n4.Docker-Compose "
 
 # Set the VPC and subnet CIDR blocks
 VPC_CIDR_BLOCK="10.0.0.0/16"
@@ -32,7 +71,7 @@ aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8228 --cidr 0.0.0.0/0
 
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
-INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count 1 --instance-type t2.medium --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=docker,Value=Test}]' 'ResourceType=volume,Tags=[{Key=docker, Value=Test}]' --user-data "#!/bin/bash
+INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count $count --instance-type $ec2type --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=docker,Value=Test}]' 'ResourceType=volume,Tags=[{Key=docker, Value=Test}]' --user-data "#!/bin/bash
 sudo yum update -y
 sudo yum install java-11-openjdk-devel -y
 sudo yum install git -y
@@ -50,7 +89,7 @@ source ~/.bash_profile") # --query 'Instances[0].InstanceId' --output text
 
 # added sonar group without user access bin/false
 
-echo "$INSTANCE_ID" > test.json
+echo "$INSTANCE_ID" > ec2instanceDetail.json
 
 cat test.json
 # Wait for the instance to be in a running state
@@ -71,9 +110,9 @@ aws ec2 wait instance-running --instance-ids $INSTANCEID
 echo "========== Public IP for Instance ============="
 
 # Get the public IP address of the instance
-PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCEID --query 'Reservations[0].Instances[0].PublicIpAddress' --output json)
+PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $INSTANCEID --query 'Reservations[*].Instances[*].PublicIpAddress' --output json)
 
-echo "$PUBLIC_IP"
+echo "Your Public IP address of instances is  $PUBLIC_IP"
 
 # May be for jenkins need to install jdk11
 # sudo yum update -y
