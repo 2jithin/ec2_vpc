@@ -80,7 +80,9 @@ sudo sed -i '/^ExecStart=/c ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H 
 sudo usermod -aG docker $USER
 sudo service docker stop
 sudo systemctl daemon-reload
+sleep 4
 sudo chmod 666 /var/run/docker.sock
+sleep 4
 sudo systemctl daemon-reload
 sudo service docker restart
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.17.0-rc.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
