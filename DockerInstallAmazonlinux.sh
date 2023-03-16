@@ -80,12 +80,9 @@ sudo sed -i '/^ExecStart=/c ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H 
 sudo usermod -aG docker $USER
 sudo service docker stop
 sudo systemctl daemon-reload
-sleep 2
 sudo chmod 666 /var/run/docker.sock
-sleep 2
 sudo systemctl daemon-reload
 sudo service docker restart
-sleep 2
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.17.0-rc.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 source ~/.bash_profile") # --query 'Instances[0].InstanceId' --output text
