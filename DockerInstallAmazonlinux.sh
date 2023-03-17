@@ -110,7 +110,7 @@ INSTANCEID=$(aws ec2 describe-instances --filters Name=instance-state-name,Value
 
 echo "========== WAIT for Instance ============="
 
-sleep 20
+sleep 40
 aws ec2 wait instance-running --instance-ids $INSTANCEID
 
 echo "========== Public IP for Instance ============="
