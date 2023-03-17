@@ -97,7 +97,7 @@ git read-tree -mu HEAD") # --query 'Instances[0].InstanceId' --output text
 
 echo "$INSTANCE_ID" > ec2instanceDetail.json
 
-cat test.json
+cat ec2instanceDetail.json
 # Wait for the instance to be in a running state
 
 # result=$(jq '.Instances[].InstanceId' test.json)
@@ -110,7 +110,7 @@ INSTANCEID=$(aws ec2 describe-instances --filters Name=instance-state-name,Value
 
 echo "========== WAIT for Instance ============="
 
-sleep 40
+sleep 20
 aws ec2 wait instance-running --instance-ids $INSTANCEID
 
 echo "========== Public IP for Instance ============="
