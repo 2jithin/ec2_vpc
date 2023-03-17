@@ -63,12 +63,14 @@ aws ec2 create-route --route-table-id $ROUTE_TABLE_ID --destination-cidr-block 0
 
 # Create a Security Group to allow SSH and Jenkins access to the instance
 SG_ID=$(aws ec2 create-security-group --group-name docker-composet2Medium --description "Security group for SSH access" --vpc-id $VPC_ID --query 'GroupId' --output text)
+
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 22 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8080 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 80 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 9000 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 4243 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8228 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 2377 --cidr 0.0.0.0/0
 
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
 INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count $count --instance-type $ec2type --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=docker,Value=Test}]' 'ResourceType=volume,Tags=[{Key=docker, Value=Test}]' --user-data "#!/bin/bash
