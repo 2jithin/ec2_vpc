@@ -91,7 +91,8 @@ git clone https://github.com/2jithin/ec2_vpc.git
 cd ec2_vpc/
 git config core.sparseCheckout true
 echo "swarmDockertest/" >> .git/info/sparse-checkout
-git read-tree -mu HEAD") # --query 'Instances[0].InstanceId' --output text
+git read-tree -mu HEAD
+cd /ec2_vpc/swarmDockertest/") # --query 'Instances[0].InstanceId' --output text
 
 # added sonar group without user access bin/false
 
