@@ -2,12 +2,20 @@ version: "3.9"
 services:
   redis:
     image: "redis:alpine"
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+      placement:
+        constraints: 
+          - node.role == worker
     volumes: 
       - redis_data:/data
     ports:
       - "6379:6379" # this is default port even if not mentioned port
     #command: redis-server /usr/local/etc/redis/redis.conf
   web:
+    image: 127.0.0.1:5000/stackdemo
     build: .
     ports:
       - "8000:8000"
