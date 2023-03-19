@@ -6,7 +6,7 @@ services:
       - redis_data:/data
     ports:
       - "6379:6379" # this is default port even if not mentioned port
-    command: redis-server /usr/local/etc/redis/redis.conf
+    #command: redis-server /usr/local/etc/redis/redis.conf
   web:
     build: .
     ports:
