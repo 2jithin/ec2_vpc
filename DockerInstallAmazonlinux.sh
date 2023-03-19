@@ -37,7 +37,7 @@ case $choice in
     ;;
 esac
 
-echo "provisioning $count of Amazon linux Instance as $ec2type along with VPC,Subnet,SG,IGateway,RouteTable also will be installed \n 1.java-11 \n2.git]\n 3.Docker \n4.Docker-Compose "
+printf "provisioning $count of Amazon linux Instance as $ec2type along with VPC,Subnet,SG,IGateway,RouteTable also will be installed \n 1.Java-11 \n 2.git] \n 3.Docker \n 4.Docker-Compose \n"
 
 # Set the VPC and subnet CIDR blocks
 VPC_CIDR_BLOCK="10.0.0.0/16"
