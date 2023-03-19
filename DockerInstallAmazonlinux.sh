@@ -81,9 +81,11 @@ sudo yum install docker -y
 sudo sed -i '/^ExecStart=/c ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H fd:// --containerd=/run/containerd/containerd.sock $OPTIONS $DOCKER_STORAGE_OPTIONS $DOCKER_ADD_RUNTIMES'
 sudo usermod -aG docker $USER
 sudo service docker stop
+sudo systemctl enable docker
 sudo chmod 666 /var/run/docker.sock
 sudo systemctl daemon-reload
 sudo systemctl start docker
+sudo chmod 666 /var/run/docker.sock
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.17.0-rc.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 source ~/.bash_profile
