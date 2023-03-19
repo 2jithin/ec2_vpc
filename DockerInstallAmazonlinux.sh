@@ -87,6 +87,7 @@ sudo systemctl start docker
 sudo curl -L "https://github.com/docker/compose/releases/download/v2.17.0-rc.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 source ~/.bash_profile
+mkdir clonnedfolder
 git clone https://github.com/2jithin/ec2_vpc.git
 cd ec2_vpc/
 git config core.sparseCheckout true

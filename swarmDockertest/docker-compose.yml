@@ -1,9 +1,5 @@
 version: "3.9"
 services:
-  web:
-    build: .
-    ports:
-      - "8000:5000"
   redis:
     image: "redis:alpine"
     volumes: 
@@ -11,8 +7,13 @@ services:
     ports:
       - "6379:6379" # this is default port even if not mentioned port
     command: redis-server /usr/local/etc/redis/redis.conf
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+    depends_on:
+      - redis
     
-
 volumes:
   redis_data:
     name: docker-compose-redis-volume
