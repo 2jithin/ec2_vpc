@@ -16,7 +16,7 @@ services:
       - "6379:6379" # this is default port even if not mentioned port
     #command: redis-server /usr/local/etc/redis/redis.conf
   web:
-    image: 127.0.0.1:5000/stackdemo
+    image: stackdemo:v1
     build:
       context: .
       dockerfile: Dockerfile
