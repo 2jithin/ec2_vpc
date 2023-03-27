@@ -1,0 +1,48 @@
+####### Listing services #######
+[node1] (local) root@192.168.0.8 ~
+$ docker service ls
+ID             NAME      MODE         REPLICAS   IMAGE          PORTS
+syn9jo2t4jcn   app2      replicated   1/1        nginx:latest   
+
+####### Scalling app2 from single container to 10 more container #######
+[node1] (local) root@192.168.0.8 ~
+$ docker service update --replicas 10 app2
+app2
+overall progress: 10 out of 10 tasks 
+1/10: running   [==================================================>] 
+2/10: running   [==================================================>] 
+3/10: running   [==================================================>] 
+4/10: running   [==================================================>] 
+5/10: running   [==================================================>] 
+6/10: running   [==================================================>] 
+7/10: running   [==================================================>] 
+8/10: running   [==================================================>] 
+9/10: running   [==================================================>] 
+10/10: running   [==================================================>] 
+verify: Service converged 
+[node1] (local) root@192.168.0.8 ~
+
+####### Verifying that app2's workload is distributed to both of the ndoes #######
+$ docker service ps app2
+ID             NAME      IMAGE          NODE      DESIRED STATE   CURRENT STATE            ERROR     PORTS
+z12bzz5sop6i   app2.1    nginx:latest   node1     Running         Running 15 minutes ago             
+8a78pqxg38cb   app2.2    nginx:latest   node2     Running         Running 15 seconds ago             
+rcc0l0x09li0   app2.3    nginx:latest   node2     Running         Running 15 seconds ago             
+os19nddrn05m   app2.4    nginx:latest   node1     Running         Running 22 seconds ago             
+d30cyg5vznhz   app2.5    nginx:latest   node1     Running         Running 22 seconds ago             
+o7sb1v63pny6   app2.6    nginx:latest   node2     Running         Running 15 seconds ago             
+iblxdrleaxry   app2.7    nginx:latest   node1     Running         Running 22 seconds ago             
+7kg6esguyt4h   app2.8    nginx:latest   node2     Running         Running 15 seconds ago             
+k2fbxhh4wwym   app2.9    nginx:latest   node1     Running         Running 22 seconds ago             
+2dncdz2fypgz   app2.10   nginx:latest   node2     Running         Running 15 seconds ago  
+But if you need to scale your app1 you can't because you have created the container with standalone mode.
+
+
+
+
+
+==========================================
+
+docker swarm init --advertise-addr 192.168.0.28>swaminit.sh
+
+scp swarminit.sh root@192.168.0.27:/root/swaminit/runshell.sh
