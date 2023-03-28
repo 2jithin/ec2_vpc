@@ -3,9 +3,12 @@ services:
   redis:
     image: "redis:alpine"
     deploy:
+      mode: replicated
       replicas: 1
+      restart_policy: 
+        condition: on-failure
       update_config:
-        parallelism: 1
+        parallelism: 2
         delay: 10s
       placement:
         constraints: 
@@ -17,17 +20,32 @@ services:
     #command: redis-server /usr/local/etc/redis/redis.conf
   web:
     image: 127.0.0.1:5000/stackdemo
-    build: .
+    hostname: '{{.Node.Hostname}}'
+    #build: .
     #   context: .
     #   dockerfile: Dockerfile
     deploy:
-      replicas: 1
+      mode: replicated    
+      replicas: 2
+      restart_policy: 
+        condition: on-failure
+      
       placement:
         constraints: [node.role == manager]
     ports:
       - "8000:8000"
     depends_on:
       - redis
+  visualizer:
+    image: dockersamples/visualizer
+    ports:
+      - "8080:8080"
+    stop_grace_period: 1m30s
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
 volumes:
   redis_data:
