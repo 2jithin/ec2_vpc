@@ -65,12 +65,13 @@ aws ec2 create-route --route-table-id $ROUTE_TABLE_ID --destination-cidr-block 0
 SG_ID=$(aws ec2 create-security-group --group-name docker-composet2Medium --description "Security group for SSH access" --vpc-id $VPC_ID --query 'GroupId' --output text)
 
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 22 --cidr 0.0.0.0/0
-aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8080 --cidr 0.0.0.0/0
+#aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8080 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 80 --cidr 0.0.0.0/0
-aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 9000 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 4243 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8228 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 2377 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 9000 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id $SG_ID --ip-permissions '[{"IpProtocol": "tcp", "FromPort": 8000, "ToPort": 8999, "IpRanges": [{"CidrIp": "0.0.0.0/0", "Description": "Common Application"}]}]'
 
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
 INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count $count --instance-type $ec2type --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=docker,Value=Test}]' 'ResourceType=volume,Tags=[{Key=docker, Value=Test}]' --user-data "#!/bin/bash
@@ -90,13 +91,14 @@ sudo curl -L "https://github.com/docker/compose/releases/download/v2.17.0-rc.1/d
 sudo chmod +x /usr/local/bin/docker-compose
 source ~/.bash_profile
 mkdir /home/ec2-user/clonnedfolder
-cd /home/ec2-user/clonnedfolder
+cd /home/ec2-user/clonnedfolder/
 git clone https://github.com/2jithin/ec2_vpc.git
 cd ec2_vpc/
 git config core.sparseCheckout true
 echo "swarmDockertest/" >> .git/info/sparse-checkout
 git read-tree -mu HEAD
-cd /ec2_vpc/swarmDockertest/") # --query 'Instances[0].InstanceId' --output text
+cd /ec2_vpc/swarmDockertest/
+sudo mv /ec2_vpc/swarmDockertest/ /home/ec2-user/") # --query 'Instances[0].InstanceId' --output text
 
 # added sonar group without user access bin/false
 
