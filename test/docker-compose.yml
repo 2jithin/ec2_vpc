@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  redis:
+    image: "redis:alpine"
+    deploy:
+      replicas: 1
+    volumes:
+      - redis_data:/data
+  web:
+    image: demostack
+    build: .
+    ports:
+      - "8000:8000"
+    # networks:
+    #   - webnet
+    deploy:
+      mode: replicated    
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy: 
+        condition: on-failure
+    depends_on:
+      - redis
+
+volumes:
+  redis_data:
+    name: redis_volume
+    driver: local
+
+# networks:
+#   webnet:
