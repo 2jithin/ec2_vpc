@@ -4,7 +4,7 @@ from flask import Flask
 from redis import Redis
 
 app = Flask(__name__)
-redis = Redis(host='redis', port=6379)
+redis = Redis(host='redis', port=6000)
 
 # def get_hit_count():
 #     retries = 5

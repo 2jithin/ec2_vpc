@@ -71,7 +71,7 @@ aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 8228 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 2377 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 9000 --cidr 0.0.0.0/0
-aws ec2 authorize-security-group-ingress --group-id $SG_ID --ip-permissions '[{"IpProtocol": "tcp", "FromPort": 8000, "ToPort": 8999, "IpRanges": [{"CidrIp": "0.0.0.0/0", "Description": "Common Application"}]}]'
+aws ec2 authorize-security-group-ingress --group-id $SG_ID --ip-permissions '[{"IpProtocol": "tcp", "FromPort": 5000, "ToPort": 8999, "IpRanges": [{"CidrIp": "0.0.0.0/0", "Description": "Common Application"}]}]'
 
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
 INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count $count --instance-type $ec2type --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=docker,Value=Test}]' 'ResourceType=volume,Tags=[{Key=docker, Value=Test}]' --user-data "#!/bin/bash
@@ -96,6 +96,7 @@ cd ec2_vpc/
 git config core.sparseCheckout true
 echo "swarmDockertest/" >> .git/info/sparse-checkout
 git read-tree -mu HEAD
+sudo chown +wx /ec2_vpc/swarmDockertest/
 cd /ec2_vpc/swarmDockertest/
 sudo mv /ec2_vpc/swarmDockertest/ /home/ec2-user/") # --query 'Instances[0].InstanceId' --output text
 
