@@ -94,10 +94,11 @@ cd /home/ec2-user/
 git clone https://github.com/2jithin/ec2_vpc.git
 cd ec2_vpc/
 git config core.sparseCheckout true
-echo "swarmDockertest/" >> .git/info/sparse-checkout
+echo "main/" >> .git/info/sparse-checkout
 git read-tree -mu HEAD
-sudo chown ec2-user -R /ec2_vpc/swarmDockertest/
-sudo chmod +wx -R /ec2_vpc/swarmDockertest/
+sudo chown ec2-user -R /ec2_vpc/main/
+sudo chmod +wx -R /ec2_vpc/main/
+sudo chown -R ec2-user /ec2_vpc/main/
 cd /ec2_vpc/swarmDockertest/
 sudo mv /ec2_vpc/swarmDockertest/ /home/ec2-user/") # --query 'Instances[0].InstanceId' --output text
 
