@@ -37,7 +37,7 @@ case $choice in
     ;;
 esac
 
-printf "provisioning $count of Amazon linux Instance as $ec2type along with VPC,Subnet,SG,IGateway,RouteTable also will be installed \n 1.Java-11 \n 2.git] \n 3.Docker \n 4.Docker-Compose \n"
+printf "provisioning $count of Amazon linux Instance as $ec2type along with VPC,Subnet,SG,IGateway,RouteTable also will be installed \n 1.[Java-11] \n 2.[git] \n 3.[Docker] \n 4.[Docker-Compose] \n"
 
 # Set the VPC and subnet CIDR blocks
 VPC_CIDR_BLOCK="10.0.0.0/16"
@@ -74,7 +74,7 @@ aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port
 aws ec2 authorize-security-group-ingress --group-id $SG_ID --ip-permissions '[{"IpProtocol": "tcp", "FromPort": 5000, "ToPort": 8999, "IpRanges": [{"CidrIp": "0.0.0.0/0", "Description": "Common Application"}]}]'
 
 # Launch an EC2 instance in the public subnet with the specified Security Group, key pair, and userdata
-INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0cc87e5027adcdca8 --count $count --instance-type $ec2type --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=docker,Value=Test}]' 'ResourceType=volume,Tags=[{Key=docker, Value=Test}]' --user-data "#!/bin/bash
+INSTANCE_ID=$(aws ec2 run-instances --image-id ami-00c39f71452c08778 --count $count --instance-type $ec2type --security-group-ids $SG_ID --subnet-id $SUBNET_ID --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=docker,Value=Test}]' 'ResourceType=volume,Tags=[{Key=docker, Value=Test}]' --user-data "#!/bin/bash
 sudo yum update -y
 sudo yum install java-11-openjdk-devel -y
 sudo yum install git -y

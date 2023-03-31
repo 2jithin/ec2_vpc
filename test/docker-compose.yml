@@ -22,6 +22,11 @@ services:
           memory: 50M
       restart_policy: 
         condition: on-failure
+      update_config:
+        parallelism: 2
+        delay: 10s
+      placement:
+        constraints: [node.role == manager]
     depends_on:
       - redis
   visualizer:
